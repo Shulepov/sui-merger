@@ -29,7 +29,7 @@ const About = (props: any) => {
             <strong>2.</strong> Leave OUTPUT section as is if you just want to
             merge. Or specify some amounts to split.
             <br />
-            <strong>2.1.</strong> You can merge & split at same time.
+            <strong>2.1.</strong> You can merge & split at the same time.
             <br />
             <strong>3.</strong> Press PERFORM to execute transaction.
             <br />
