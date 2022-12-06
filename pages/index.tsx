@@ -9,7 +9,7 @@ import { CoinObject } from "../app/coin";
 import About from "../components/about/About";
 
 const TitleLabel = (props: any) => (
-  <h2 className="text-center my-4 font-medium text-xl">{props.children}</h2>
+  <h2 className="text-center mb-4 font-medium text-xl">{props.children}</h2>
 );
 
 
@@ -69,7 +69,7 @@ export default function Home() {
 
           {Object.keys(coins.coins).length > 0 ? (
             <>
-              <div className="pb-4">
+              <div className="pb-4 pt-2">
                 <TitleLabel>INPUT COIN OBJECTS</TitleLabel>
                 <CoinTypeSelector
                   coinTypes={Object.keys(coins.coins)}
@@ -85,7 +85,7 @@ export default function Home() {
                   }
                 ></CoinsObjectsSelector>
               </div>
-              <div>
+              <div className="mt-4">
                 <TitleLabel>OUTPUT COINS</TitleLabel>
                 <AmountsInput
                   values={targetAmounts}
