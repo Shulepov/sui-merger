@@ -64,7 +64,7 @@ export default function Home() {
       <div className="lg:w-2/5 md:w-1/2 w-full rounded-lg p-6 pt-2 bg-dark-2 border border-gray-600">
         <div className="flex flex-row justify-end -mx-2"> <About /> </div>
         <div className="">
-          {!wallet.connected ? "Connect wallet first" : null}
+          {!wallet.connected ? "Connect your wallet" : null}
           {coins.loading ? "LOADING" : null}
 
           {Object.keys(coins.coins).length > 0 ? (
