@@ -48,14 +48,14 @@ export default function Home() {
         },
       });
       console.log(resData);
-      alert("Coins successfully splited or merged.");
+      alert("Coins successfully splited/merged.");
     } catch (e) {
       console.log(e);
       alert("Failed to merge/split coins");
     } finally {
       coins.revalidate();
       setSelectedCoins([]);
-      setTargetAmounts([]);
+      setTargetAmounts([0]);
     }
   }
 
