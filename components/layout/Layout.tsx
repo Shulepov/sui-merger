@@ -14,8 +14,6 @@ const Layout = (props: any) => {
         </main>
       </div>
       <div className="grow"></div>
-      
-      
     </div>
   );
 };
