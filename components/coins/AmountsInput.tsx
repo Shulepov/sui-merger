@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classNames from "../../app/utils/classnames";
 
 type AmountInputsProps = {
   totalAmount: number;
@@ -14,9 +15,12 @@ type CoinInputProps = {
 };
 
 const CoinInput = (props: CoinInputProps) => (
-  <div className="grow flex rounded-md border-2 border-gray-500">
+  <div className="grow flex rounded-md border-2 border-gray-500 ">
     <input
-      className="grow bg-transparent p-2"
+      className={classNames(
+        "grow p-2",
+        props.value < 0 ? "bg-rose-500" : "bg-transparent disabled:bg-gray-700"
+      )}
       type="number"
       value={props.value}
       disabled={props.disabled}
@@ -26,12 +30,12 @@ const CoinInput = (props: CoinInputProps) => (
 );
 
 const AmountsInput = (props: AmountInputsProps) => {
-//  const [values, setValues] = useState<Array<number>>([]);
+  //  const [values, setValues] = useState<Array<number>>([]);
 
   const values = props.values;
   const specifiedAmount = values.reduce((acc, val) => acc + val, 0);
 
-  const remainedAmount = Math.max(0, props.totalAmount - specifiedAmount);
+  const remainedAmount = props.totalAmount - specifiedAmount;
 
   const all = [...values, remainedAmount];
 
@@ -68,14 +72,14 @@ const AmountsInput = (props: AmountInputsProps) => {
           />
           {idx == values.length ? (
             <button
-              className="p-2 px-4 rounded-full bg-emerald-500 hover:bg-emerald-600"
+              className="p-1 px-3 rounded-md bg-emerald-500 hover:bg-emerald-600"
               onClick={() => addValue()}
             >
               +
             </button>
           ) : (
             <button
-              className="p-2 px-4 rounded-full bg-rose-500 hover:bg-rose-600"
+              className="p-1 px-3 rounded-md bg-rose-500 hover:bg-rose-600"
               onClick={() => removeValue(idx)}
             >
               -

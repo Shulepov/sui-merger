@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import Image from "next/image";
 import { useWallet } from "@suiet/wallet-kit";
 import useOwnedCoins from "../hooks/useOwnedCoins";
@@ -8,12 +8,16 @@ import { convertSuiToWei, convertWeiToSui } from "../app/utils/sui";
 import AmountsInput from "../components/coins/AmountsInput";
 import { CoinObject } from "../app/coin";
 
+const TitleLabel = (props: any) => (
+  <h2 className="text-center my-4 font-medium text-xl">{props.children}</h2>
+)
+
 export default function Home() {
   const wallet = useWallet();
   const coins = useOwnedCoins(wallet.address);
   const [selectedCoinType, selectCoinType] = useState<string>("SUI");
   const [selectedCoins, setSelectedCoins] = useState<Array<CoinObject>>([]);
-  const [targetAmounts, setTargetAmounts] = useState<Array<number>>([]);
+  const [targetAmounts, setTargetAmounts] = useState<Array<number>>([0]);
 
   const totalAmount = selectedCoins.reduce((amount, coin) => {
     return amount + convertWeiToSui(coin.balance);
@@ -55,15 +59,15 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col w-full items-center gap-4 mt-10">
-      <div className="lg:w-1/3 md:w-1/2 w-full">
+    <div className="flex flex-col w-full items-center gap-4 mt-2">
+      <div className="lg:w-2/5 md:w-1/2 w-full rounded-lg p-6">
         <div className="">
           {!wallet.connected ? "Connect wallet first" : null}
           {coins.loading ? "LOADING" : null}
 
           {Object.keys(coins.coins).length > 0 ? (
             <>
-              <div className="text-center mb-4">INPUTS</div>
+              <TitleLabel >INPUTS</TitleLabel>
               <CoinTypeSelector
                 coinTypes={Object.keys(coins.coins)}
                 selectedType={selectedCoinType}
@@ -77,7 +81,8 @@ export default function Home() {
                   setSelectedCoins(selected)
                 }
               ></CoinsObjectsSelector>
-              <div className="text-center my-4">OUTPUTS</div>
+
+              <TitleLabel>OUTPUTS</TitleLabel>
               <AmountsInput
                 values={targetAmounts}
                 totalAmount={totalAmount}
