@@ -6,7 +6,7 @@ import CoinsObjectsSelector from "../components/coins/CoinObjectsSelector";
 import { convertSuiToWei, convertWeiToSui } from "../app/utils/sui";
 import AmountsInput from "../components/coins/AmountsInput";
 import { CoinObject } from "../app/coin";
-
+import About from "../components/about/About";
 
 const TitleLabel = (props: any) => (
   <h2 className="text-center my-4 font-medium text-xl">{props.children}</h2>
@@ -61,7 +61,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full items-center gap-4 mt-2 ">
-      <div className="relative lg:w-2/5 md:w-1/2 w-full rounded-lg p-6 pt-2 bg-dark-2 border border-gray-600">
+      <div className="lg:w-2/5 md:w-1/2 w-full rounded-lg p-6 pt-2 bg-dark-2 border border-gray-600">
+        <div className="flex flex-row justify-end -mx-2"> <About /> </div>
         <div className="">
           {!wallet.connected ? "Connect wallet first" : null}
           {coins.loading ? "LOADING" : null}
