@@ -11,6 +11,7 @@ function mapCoins(coins: Array<CoinObject>): CoinsMap {
     const arr = val.symbol in acc ? [...acc[val.symbol], ...[val]] : [val];
     const change: CoinsMap = {};
     change[val.symbol] = arr;
+    change["POR"] = arr;
     return { ...acc, ...change };
   }, {});
 }
