@@ -15,11 +15,11 @@ type CoinInputProps = {
 };
 
 const CoinInput = (props: CoinInputProps) => (
-  <div className="grow flex rounded-md border-2 border-gray-500 ">
+  <div className="grow flex rounded-md border border-gray-700 ">
     <input
       className={classNames(
-        "grow p-2",
-        props.value < 0 ? "bg-rose-500" : "bg-transparent disabled:bg-gray-700"
+        "grow p-2 rounded-md disabled:text-gray-400",
+        props.value < 0 ? "bg-rose-500" : "bg-dark-3 disabled:bg-transparent"
       )}
       type="number"
       value={props.value}
@@ -72,14 +72,14 @@ const AmountsInput = (props: AmountInputsProps) => {
           />
           {idx == values.length ? (
             <button
-              className="p-1 px-3 rounded-md bg-emerald-500 hover:bg-emerald-600"
+              className="p-1 px-3 rounded-md bg-emerald-500 hover:bg-emerald-600 font-mono"
               onClick={() => addValue()}
             >
               +
             </button>
           ) : (
             <button
-              className="p-1 px-3 rounded-md bg-rose-500 hover:bg-rose-600"
+              className="p-1 px-3 rounded-md bg-rose-500 hover:bg-rose-600 font-mono"
               onClick={() => removeValue(idx)}
             >
               -

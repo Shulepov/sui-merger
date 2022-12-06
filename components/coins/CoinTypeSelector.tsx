@@ -1,7 +1,7 @@
 
 const CoinTypeOption = (props: any) => (
   <button
-    className="rounded-full bg-white text-black px-2 py-1 disabled:bg-cyan-400"
+    className="rounded-full bg-white text-black px-3 py-1 disabled:bg-cyan-400"
     onClick={props.onClick}
     disabled={props.selected}
   >

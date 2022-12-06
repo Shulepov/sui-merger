@@ -12,8 +12,8 @@ type CoinObjectProps = {
 const CoinObject = ({ coin, selected, onClick }: CoinObjectProps) => (
   <div
     className={classNames(
-      "border-2 border-gray-500 rounded-md p-2 text-center cursor-pointer",
-      selected ? "bg-blue-800" : ""
+      "transition-all border border-gray-700 rounded-md p-2 text-center cursor-pointer ",
+      selected ? "bg-emerald-500 scale-95" : "bg-dark-3"
     )}
     onClick={onClick}
   >

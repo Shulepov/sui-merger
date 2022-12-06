@@ -10,7 +10,7 @@ import { CoinObject } from "../app/coin";
 
 const TitleLabel = (props: any) => (
   <h2 className="text-center my-4 font-medium text-xl">{props.children}</h2>
-)
+);
 
 export default function Home() {
   const wallet = useWallet();
@@ -22,10 +22,10 @@ export default function Home() {
   const totalAmount = selectedCoins.reduce((amount, coin) => {
     return amount + convertWeiToSui(coin.balance);
   }, 0);
+  const targetAmount = targetAmounts.reduce((acc, val) => acc + val, 0);
 
   async function perform() {
-    const remaining =
-      totalAmount - targetAmounts.reduce((acc, val) => acc + val, 0);
+    const remaining = totalAmount - targetAmount;
 
     const amounts = [...targetAmounts, remaining]
       .filter((val) => val != 0)
@@ -59,43 +59,46 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col w-full items-center gap-4 mt-2">
-      <div className="lg:w-2/5 md:w-1/2 w-full rounded-lg p-6">
+    <div className="flex flex-col w-full items-center gap-4 mt-2 ">
+      <div className="lg:w-2/5 md:w-1/2 w-full rounded-lg p-6 pt-2 bg-dark-2 border border-gray-600">
         <div className="">
           {!wallet.connected ? "Connect wallet first" : null}
           {coins.loading ? "LOADING" : null}
 
           {Object.keys(coins.coins).length > 0 ? (
             <>
-              <TitleLabel >INPUTS</TitleLabel>
-              <CoinTypeSelector
-                coinTypes={Object.keys(coins.coins)}
-                selectedType={selectedCoinType}
-                onSelect={(value: string) => selectCoinType(value)}
-              ></CoinTypeSelector>
+              <div className="pb-4">
+                <TitleLabel>INPUTS</TitleLabel>
+                <CoinTypeSelector
+                  coinTypes={Object.keys(coins.coins)}
+                  selectedType={selectedCoinType}
+                  onSelect={(value: string) => selectCoinType(value)}
+                ></CoinTypeSelector>
 
-              <CoinsObjectsSelector
-                coins={coins.coins[selectedCoinType]}
-                selectedItems={selectedCoins}
-                onSelection={(selected: Array<CoinObject>) =>
-                  setSelectedCoins(selected)
-                }
-              ></CoinsObjectsSelector>
-
-              <TitleLabel>OUTPUTS</TitleLabel>
-              <AmountsInput
-                values={targetAmounts}
-                totalAmount={totalAmount}
-                onChange={setTargetAmounts}
-              />
+                <CoinsObjectsSelector
+                  coins={coins.coins[selectedCoinType]}
+                  selectedItems={selectedCoins}
+                  onSelection={(selected: Array<CoinObject>) =>
+                    setSelectedCoins(selected)
+                  }
+                ></CoinsObjectsSelector>
+              </div>
+              <div>
+                <TitleLabel>OUTPUTS</TitleLabel>
+                <AmountsInput
+                  values={targetAmounts}
+                  totalAmount={totalAmount}
+                  onChange={setTargetAmounts}
+                />
+              </div>
             </>
           ) : null}
         </div>
 
         <div className="mt-6 w-full">
           <button
-            className="rounded-md w-full border-green-500 border-2 p-2 disabled:opacity-10"
-            disabled={selectedCoins.length == 0}
+            className="rounded-md w-full bg-blue-1 hover:bg-blue-2 p-4 disabled:opacity-50"
+            disabled={selectedCoins.length == 0 || targetAmount > totalAmount}
             onClick={() => perform()}
           >
             Perform

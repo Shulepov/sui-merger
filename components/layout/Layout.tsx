@@ -4,7 +4,7 @@ import Header from "./Header";
 
 const Layout = (props: any) => {
   return (
-    <div className="flex flex-col dark:bg-slate-800  min-h-screen">
+    <div className="flex flex-col dark:bg-dark-1  min-h-screen font-light">
       <Header/>
       <div className="">
         <main>
@@ -14,7 +14,7 @@ const Layout = (props: any) => {
         </main>
       </div>
       <div className="grow"></div>
-      <Footer/>
+      
       
     </div>
   );
