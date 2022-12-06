@@ -86,7 +86,7 @@ export default function Home() {
                 ></CoinsObjectsSelector>
               </div>
               <div>
-                <TitleLabel>OUTPUT COIN OBJECTS</TitleLabel>
+                <TitleLabel>OUTPUT COINS</TitleLabel>
                 <AmountsInput
                   values={targetAmounts}
                   totalAmount={totalAmount}
