@@ -18,7 +18,7 @@ const CoinObject = ({ coin, selected, maxSelected, onClick }: CoinObjectProps) =
       selected ? "bg-emerald-500 scale-95" : "bg-dark-3"
     )}
     onClick={onClick}
-    data-tip={maxSelected && !selected ? "All coins can't be selected - at least one must be used as gas<br/>and it can't be used in transaction" : null}
+    data-tip={maxSelected && !selected ? "All coins can't be selected - at least one must be used as a gas<br/>and it can't be used in a transaction" : null}
     data-multiline={true}
   >
     {convertWeiToSui(coin.balance).toString()}
