@@ -7,7 +7,7 @@ import {
 } from "@mysten/sui.js";
 import { Coin, CoinObject } from "./coin";
 
-const RPC_URL = "https://fullnode.devnet.sui.io/";
+const RPC_URL = "https://fullnode.testnet.sui.io:443";
 
 async function getOwnedObjectsInner(address: string): Promise<SuiObject[]> {
   const provider = new JsonRpcProvider(RPC_URL);

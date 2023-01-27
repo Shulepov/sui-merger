@@ -2,7 +2,16 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../components/layout/Layout";
-import { WalletProvider } from "@suiet/wallet-kit";
+
+import {
+  WalletProvider,
+  Chain,
+  SuiTestnetChain,
+} from '@suiet/wallet-kit';
+
+const SupportedChains: Chain[] = [
+  SuiTestnetChain,
+]
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <WalletProvider>
+      <WalletProvider chains={SupportedChains}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
