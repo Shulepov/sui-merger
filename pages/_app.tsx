@@ -7,10 +7,11 @@ import {
   WalletProvider,
   Chain,
   SuiTestnetChain,
+  SuiDevnetChain,
 } from '@suiet/wallet-kit';
 
 const SupportedChains: Chain[] = [
-  SuiTestnetChain,
+  SuiDevnetChain
 ]
 
 export default function App({ Component, pageProps }: AppProps) {
