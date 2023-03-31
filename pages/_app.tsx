@@ -11,6 +11,7 @@ import {
 } from '@suiet/wallet-kit';
 
 const SupportedChains: Chain[] = [
+  SuiTestnetChain,
   SuiDevnetChain
 ]
 
