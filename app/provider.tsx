@@ -26,21 +26,6 @@ export async function getOwnedObjects(
   return Array.from(objects);
 }
 
-export async function getObjectOwnedByObject(
-  address: string
-): Promise<Array<SuiObject>> {
-  const provider = new JsonRpcProvider(RPC_URL);
-  const objectInfos = await provider.getObjectsOwnedByObject(address);
-  console.log("Objects infos");
-  console.log(objectInfos);
-  const objectIds = objectInfos.map((obj) => obj.objectId);
-  const resps = await provider.getObjectBatch(objectIds);
-  const objects = resps
-    .filter((resp) => resp.status === "Exists")
-    .map((resp) => getObjectExistsResponse(resp) as SuiObject);
-  return Array.from(objects);
-}
-
 export function filterCoins(objects: Array<SuiObject>): Array<CoinObject> {
   const res = objects
     .map((item) => ({

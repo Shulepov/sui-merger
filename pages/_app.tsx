@@ -12,7 +12,7 @@ import {
 
 const SupportedChains: Chain[] = [
   SuiTestnetChain,
-  SuiDevnetChain
+  //SuiDevnetChain
 ]
 
 export default function App({ Component, pageProps }: AppProps) {
