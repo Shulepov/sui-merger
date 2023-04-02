@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { CoinObject, coinSearcher } from "../../app/coin";
+import { coinSearcherNew } from "../../app/coin";
 import { convertWeiToSui } from "../../app/utils/sui";
 import classNames from "../../app/utils/classnames";
 import ReactTooltip from "react-tooltip";
+import {CoinStruct} from "@mysten/sui.js"
 
 type CoinObjectProps = {
-  coin: CoinObject;
+  coin: CoinStruct;
   selected: boolean;
   maxSelected: boolean;
   onClick: () => void;
 };
 
-const CoinObject = ({ coin, selected, maxSelected, onClick }: CoinObjectProps) => (
+const CoinObjectRow = ({ coin, selected, maxSelected, onClick }: CoinObjectProps) => (
   <div
     className={classNames(
       "transition-all border border-gray-700 rounded-md p-2 text-center cursor-pointer ",
@@ -29,27 +30,28 @@ const CoinObject = ({ coin, selected, maxSelected, onClick }: CoinObjectProps) =
 );
 
 const CoinsObjectsSelector = (props: any) => {
-  function toggleSelection(coin: CoinObject) {
+  function toggleSelection(coin: CoinStruct) {
+    console.log("toggleSelection");
     const newItems =
-      props.selectedItems.findIndex(coinSearcher(coin)) > -1
-        ? props.selectedItems.filter((item: CoinObject) => item.objectId != coin.objectId)
+      props.selectedItems.findIndex(coinSearcherNew(coin)) > -1
+        ? props.selectedItems.filter((item: CoinStruct) => item.coinObjectId != coin.coinObjectId)
         : [...props.selectedItems, coin];
 
-    if (newItems.length < props.coins.length) {
+    //if (newItems.length < props.coins.length) {
       props.onSelection(newItems);
-    }
+    //}
   }
 
   return (
     <div>
       <div className="flex flex-col gap-2 mt-6">
-        {props.coins.map((coin: CoinObject) => (
-          <CoinObject
+        {props.coins.map((coin: CoinStruct) => (
+          <CoinObjectRow
             coin={coin}
-            key={coin.objectId}
-            selected={props.selectedItems.findIndex(coinSearcher(coin)) > -1}
+            key={coin.coinObjectId}
+            selected={props.selectedItems.findIndex(coinSearcherNew(coin)) > -1}
             onClick={() => toggleSelection(coin)}
-            maxSelected={props.selectedItems.length == props.coins.length - 1}
+            maxSelected={false}
           />
         ))}
       </div>

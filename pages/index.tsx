@@ -7,6 +7,7 @@ import { convertSuiToWei, convertWeiToSui } from "../app/utils/sui";
 import AmountsInput from "../components/coins/AmountsInput";
 import { CoinObject } from "../app/coin";
 import About from "../components/about/About";
+import {CoinStruct, TransactionBlock} from "@mysten/sui.js"
 
 const TitleLabel = (props: any) => (
   <h2 className="text-center mb-4 font-medium text-xl">{props.children}</h2>
@@ -15,9 +16,9 @@ const TitleLabel = (props: any) => (
 
 export default function Home() {
   const wallet = useWallet();
-  const coins = useOwnedCoins(wallet.address);
-  const [selectedCoinType, selectCoinType] = useState<string>("SUI");
-  const [selectedCoins, setSelectedCoins] = useState<Array<CoinObject>>([]);
+  const coins = useOwnedCoins("0x2::sui::SUI", wallet.address);
+  //const [selectedCoinType, selectCoinType] = useState<string>("SUI");
+  const [selectedCoins, setSelectedCoins] = useState<Array<CoinStruct>>([]);
   const [targetAmounts, setTargetAmounts] = useState<Array<number>>([0]);
 
   const totalAmount = selectedCoins.reduce((amount, coin) => {
@@ -25,29 +26,41 @@ export default function Home() {
   }, 0);
   const targetAmount = targetAmounts.reduce((acc, val) => acc + val, 0);
 
+  if (wallet) {
+    //console.log("Chain: ");
+    //console.log(wallet.chain);
+  }
+
+  //console.log(coins.coins);
+
   async function perform() {
-    const remaining = totalAmount - targetAmount;
-
-    const amounts = [...targetAmounts, remaining]
-      .filter((val) => val != 0)
-      .map((amount) => convertSuiToWei(amount));
-
-    const recipients = amounts.map(() => wallet.address!);
+    const remaining = totalAmount - targetAmount;    
+    const gasObjects = selectedCoins.map((coin: CoinStruct) => { return {objectId: coin.coinObjectId, version: coin.version, digest: coin.digest }});
 
     try {
-      const data = {
-        inputCoins: selectedCoins.map((coin) => coin.objectId),
-        recipients: recipients,
-        amounts: amounts,
-        gasBudget: 2000,
-      };
-      const resData = await wallet.signAndExecuteTransaction({
-        transaction: {
-          kind: "pay",
-          data: data,
-        },
+      const tx = new TransactionBlock();
+      tx.setGasPayment(gasObjects);
+      tx.setGasBudget(500000000);
+      //tx.setGasOwner(wallet.address!);
+      //tx.setSender(wallet.address!);
+
+      const amounts = [...targetAmounts, remaining]
+        .filter((val) => val != 0);
+        amounts.pop();
+      const pureAmounts = amounts.map((amount) => tx.pure(convertSuiToWei(amount)));
+    
+      const coinsResult = tx.splitCoins(tx.gas, pureAmounts);
+      var newCoins = [];
+      for (var i = 0; i < pureAmounts.length; ++i) {
+        newCoins.push(coinsResult[i]);
+      }
+
+      tx.transferObjects(newCoins, tx.pure(wallet.address!));
+      const res = await wallet.signAndExecuteTransactionBlock({
+        transactionBlock: tx
       });
-      console.log(resData);
+      console.log("Transaction result: ");
+      console.log(res);
       alert("Coins successfully splited/merged.");
     } catch (e) {
       console.log(e);
@@ -71,16 +84,15 @@ export default function Home() {
             <>
               <div className="pb-4 pt-2">
                 <TitleLabel>INPUT COIN OBJECTS</TitleLabel>
-                <CoinTypeSelector
+                {/*<CoinTypeSelector
                   coinTypes={Object.keys(coins.coins)}
                   selectedType={selectedCoinType}
                   onSelect={(value: string) => selectCoinType(value)}
-                ></CoinTypeSelector>
-
+          ></CoinTypeSelector>*/}
                 <CoinsObjectsSelector
-                  coins={coins.coins[selectedCoinType]}
+                  coins={coins.coins}
                   selectedItems={selectedCoins}
-                  onSelection={(selected: Array<CoinObject>) =>
+                  onSelection={(selected: Array<CoinStruct>) =>
                     setSelectedCoins(selected)
                   }
                 ></CoinsObjectsSelector>

@@ -1,4 +1,5 @@
 import { SuiMoveObject } from '@mysten/sui.js';
+import {CoinStruct} from "@mysten/sui.js"
 
 const COIN_TYPE = '0x2::coin::Coin';
 const COIN_TYPE_ARG_REGEX = /^0x2::coin::Coin<(.+)>$/;
@@ -50,5 +51,11 @@ export class Coin {
 export function coinSearcher(target: CoinObject): (coin: CoinObject) => boolean {
   return (coin: CoinObject) => {
     return coin.objectId == target.objectId;
+  }
+}
+
+export function coinSearcherNew(target: CoinStruct): (coin: CoinStruct) => boolean {
+  return (coin: CoinStruct) => {
+    return coin.coinObjectId == target.coinObjectId;
   }
 }

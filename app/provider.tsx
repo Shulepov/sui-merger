@@ -1,16 +1,19 @@
 import {
-  SuiObject,
+  SuiObjectRef,
   JsonRpcProvider,
-  getObjectExistsResponse,
   SuiMoveObject,
   getMoveObject,
+  Connection,
+  PaginatedCoins,
+  ObjectId
 } from "@mysten/sui.js";
 import { Coin, CoinObject } from "./coin";
 
-const RPC_URL = "https://fullnode.testnet.sui.io:443";
-
-async function getOwnedObjectsInner(address: string): Promise<SuiObject[]> {
-  const provider = new JsonRpcProvider(RPC_URL);
+//const RPC_URL = "https://fullnode.testnet.sui.io:443";
+const RPC_URL = "https://fullnode.testnet.sui.io/";
+/*
+async function getOwnedObjectsInner(address: string): Promise<SuiObjectRef[]> {
+  const provider = new JsonRpcProvider(new Connection({fullnode: RPC_URL}));
   const objectInfos = await provider.getObjectsOwnedByAddress(address);
   const objectIds = objectInfos.map((obj) => obj.objectId);
   const resps = await provider.getObjectBatch(objectIds);
@@ -22,7 +25,9 @@ async function getOwnedObjectsInner(address: string): Promise<SuiObject[]> {
 export async function getOwnedObjects(
   address: string
 ): Promise<Array<SuiObject>> {
+  console.log("getOwnedObjects")
   const objects = await getOwnedObjectsInner(address);
+  console.log(objects);
   return Array.from(objects);
 }
 
@@ -58,24 +63,11 @@ export async function getLargestCoin(address: string): Promise<CoinObject> {
   }
   throw new Error(`fetch owned coins failed: ${address}`);
 }
-
-export async function getObject(objectId: string): Promise<SuiObject> {
-  const provider = new JsonRpcProvider(RPC_URL);
-  const obj = await provider.getObject(objectId);
-  if (obj.status != "Exists") {
-    throw new Error(`object doesn't exist: ${objectId}`);
-  }
-  const suiObj = obj.details as SuiObject;
-  if (suiObj) {
-    return suiObj;
-  }
-  throw new Error(`object doesn't exist: ${objectId}`);
-}
-
-export async function getObjectsBatch(
-  objectIds: Array<string>
-): Promise<Array<SuiObject | null>> {
-  const provider = new JsonRpcProvider(RPC_URL);
-  const objects = await provider.getObjectBatch(objectIds);
-  return objects.map((obj) => obj.details as SuiObject)
+*/
+export async function getOwnedCoinsOfType(coinType: string, address: string, cursor?: ObjectId | null): Promise<PaginatedCoins> {
+  const provider = new JsonRpcProvider(new Connection({fullnode: RPC_URL}));
+  //console.log("getOwnedCoinsOfType");
+  const re = provider.getCoins({owner: address, coinType: coinType, cursor: cursor, limit: 100});
+  //console.log(re);
+  return re;
 }

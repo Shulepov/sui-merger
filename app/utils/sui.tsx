@@ -1,4 +1,4 @@
-export function convertWeiToSui(amount: bigint): number {
+export function convertWeiToSui(amount: number): number {
   return Number(amount) / 1000000000;
 }
 
